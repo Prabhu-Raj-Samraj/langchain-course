@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
+from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 
 load_dotenv()
@@ -28,9 +29,8 @@ Pichai was selected to become the next CEO of Google on August 10, 2015, after p
     llm = ChatOpenAI(
         temperature=0, model_name="gpt-5"
     )  # Temperature = 0 for deterministic output, 1 for creative output, so the higher the temperature the more creative the output
-    chain = (
-        summary_prompt_template | llm
-    )  # Chain the prompt template with the LLM, | pipe operator, so it uses the summary prompt template's output is the input to the LLM (variable).
+    # llm = ChatOllama(temperature=0, model="gemma3:270m")  # Using Ollama local model
+    chain = summary_prompt_template | llm
     response = chain.invoke(
         {"information": information}
     )  # Invoke the chain with the information , invoke is the runnable object
